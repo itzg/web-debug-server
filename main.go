@@ -14,7 +14,7 @@ func main() {
 	flag.Parse()
 
 	httpServer := &http.Server{
-		Addr: *bind,
+		Addr:    *bind,
 		Handler: &debugHandler{},
 	}
 
@@ -24,7 +24,7 @@ func main() {
 
 type debugHandler struct{}
 
-func (h *debugHandler)  ServeHTTP(resp http.ResponseWriter, req *http.Request) {
+func (h *debugHandler) ServeHTTP(resp http.ResponseWriter, req *http.Request) {
 	defer req.Body.Close()
 	resp.Header().Set("Content-Type", "text/html")
 
@@ -76,5 +76,5 @@ func startSection(resp http.ResponseWriter, section string) {
 }
 
 func writeField(resp http.ResponseWriter, field, value string) {
-	fmt.Fprintf(resp, "<tr><th>%s</th><td>%s</td></tr>", field, value)
+	fmt.Fprintf(resp, "<tr><th>%s</th><td>%s</td></tr>\n", field, value)
 }
