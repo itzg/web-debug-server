@@ -8,7 +8,7 @@ jobs:
     - setup_remote_docker
     - run:
         name: docker login
-        command: docker login -u $DOCKER_HUB_USER -p $DOCKER_HUB_PASSWORD
+        command: docker login -u $DOCKER_USER -p $DOCKER_PASSWORD
     - run:
         name: build and release
         command: curl -sL https://git.io/goreleaser | bash
