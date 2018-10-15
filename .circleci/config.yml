@@ -1,0 +1,24 @@
+version: 2
+jobs:
+  release:
+    docker:
+    - image: circleci/golang:1.11
+    steps:
+    - checkout
+    - setup_remote_docker
+    - run:
+        name: docker login
+        command: docker login -u $DOCKER_USER -p $DOCKER_PASS
+    - run:
+        name: build and release
+        command: curl -sL https://git.io/goreleaser | bash
+workflows:
+  version: 2
+  release:
+    jobs:
+    - release:
+        filters:
+          branches:
+            ignore: /.*/
+          tags:
+            only: /[0-9]+(\.[0-9]+)*(-.*)*/
