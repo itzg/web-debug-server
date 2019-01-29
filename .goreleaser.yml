@@ -14,7 +14,7 @@ builds:
 dockers:
   - image_templates:
     - "itzg/web-debug-server:latest"
-    - "itzg/web-debug-server:{{ .Tag }}
+    - "itzg/web-debug-server:{{ .Tag }}"
 archive:
   replacements:
     darwin: Darwin
