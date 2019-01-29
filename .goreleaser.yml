@@ -12,7 +12,9 @@ builds:
     - amd64
     - arm
 dockers:
-  - image: itzg/web-debug-server
+  - image_templates:
+    - "itzg/web-debug-server:latest"
+    - "itzg/web-debug-server:{{ .Tag }}
 archive:
   replacements:
     darwin: Darwin

@@ -7,6 +7,7 @@ import (
 	"io/ioutil"
 	"log"
 	"net/http"
+	"os"
 )
 
 func main() {
@@ -44,6 +45,10 @@ th {
 	writeField(resp, "Method", req.Method)
 	writeField(resp, "URL", req.URL.String())
 	writeField(resp, "Remote address", req.RemoteAddr)
+	hostname, err := os.Hostname()
+	if err == nil {
+		writeField(resp, "Server hostname", hostname)
+	}
 	endSection(resp)
 
 	startSection(resp, "Headers")
