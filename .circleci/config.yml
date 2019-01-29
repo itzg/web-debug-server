@@ -5,7 +5,7 @@ jobs:
       - image: circleci/golang:1.11
     steps:
       - checkout
-      - go build
+      - run: go build
 
   release:
     docker:
