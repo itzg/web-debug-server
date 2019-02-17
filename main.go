@@ -41,9 +41,12 @@ th {
 
 <body>`)
 
+	log.Printf("INF Handling %s %s %s", req.Method, req.URL.String())
+
 	startSection(resp, "Request")
 	writeField(resp, "Method", req.Method)
 	writeField(resp, "URL", req.URL.String())
+	writeField(resp, "Host", req.Host)
 	writeField(resp, "Remote address", req.RemoteAddr)
 	hostname, err := os.Hostname()
 	if err == nil {
