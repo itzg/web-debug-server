@@ -41,7 +41,7 @@ th {
 
 <body>`)
 
-	log.Printf("INF Handling %s %s %s", req.Method, req.URL.String())
+	log.Printf("INF Handling %s %s", req.Method, req.URL.String())
 
 	startSection(resp, "Request")
 	writeField(resp, "Method", req.Method)
