@@ -1,8 +1,8 @@
 package main
 
 import (
-	"flag"
 	"fmt"
+	"github.com/itzg/go-flagsfiller"
 	"html"
 	"io/ioutil"
 	"log"
@@ -10,24 +10,51 @@ import (
 	"os"
 )
 
+var config struct {
+	Bind     string `usage:"The [host:port] to bind, but using port flag is preferred"`
+	Port     int    `default:"8080" usage:"The port to bind"`
+	Response struct {
+		Status           int    `default:"200" usage:"When set, specifies the status code to use in responses"`
+		FixedBody        string `usage:"When set, specifies a fixed body to write to the response"`
+		FixedContentType string `default:"text/plain" usage:"When FixedBody is set, specifies the content type to set"`
+	}
+}
+
 func main() {
-	bind := flag.String("bind", ":8080", "Host:port to bind")
-	flag.Parse()
+	err := flagsfiller.Parse(&config, flagsfiller.WithEnv(""))
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	bind := config.Bind
+	if bind == "" {
+		bind = fmt.Sprintf(":%d", config.Port)
+	}
 
 	httpServer := &http.Server{
-		Addr:    *bind,
+		Addr:    bind,
 		Handler: &debugHandler{},
 	}
 
-	log.Printf("Ready for connections at %s", *bind)
+	log.Printf("Ready for connections at %s", bind)
 	log.Fatal(httpServer.ListenAndServe())
 }
 
 type debugHandler struct{}
 
 func (h *debugHandler) ServeHTTP(resp http.ResponseWriter, req *http.Request) {
-	defer req.Body.Close()
+	if config.Response.FixedBody != "" {
+		resp.Header().Set("Content-Type", config.Response.FixedContentType)
+		resp.WriteHeader(config.Response.Status)
+		_, err := resp.Write([]byte(config.Response.FixedBody))
+		if err != nil {
+			log.Printf("Failed to write response body: %s", err)
+		}
+		return
+	}
+
 	resp.Header().Set("Content-Type", "text/html")
+	resp.WriteHeader(config.Response.Status)
 
 	fmt.Fprintln(resp, `<html>
 
