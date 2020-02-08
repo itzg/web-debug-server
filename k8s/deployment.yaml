@@ -1,0 +1,22 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: web-debug-server
+spec:
+  selector:
+    matchLabels:
+      app: web-debug-server
+  template:
+    metadata:
+      labels:
+        app: web-debug-server
+    spec:
+      containers:
+      - name: main
+        image: itzg/web-debug-server:1.0.0
+        resources:
+          limits:
+            memory: "128Mi"
+            cpu: "50m"
+        ports:
+        - containerPort: 8080
