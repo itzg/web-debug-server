@@ -1,4 +1,5 @@
 [![](https://img.shields.io/docker/pulls/itzg/web-debug-server.svg)](https://hub.docker.com/r/itzg/web-debug-server)
+[![CircleCI](https://img.shields.io/circleci/build/github/itzg/web-debug-server)](https://app.circleci.com/pipelines/github/itzg/web-debug-server)
 
 # web-debug-server
 
