@@ -11,6 +11,8 @@ A very minimal web server that responds with a page containing the request heade
     	The host:port to bind, but using port flag is preferred (env BIND)
   -port int
     	The port to bind (env PORT) (default 8080)
+  -redirects path=location
+    	Declares path=location mapping of local path to a resulting 307 redirect location (env REDIRECTS)
   -response-fixed-body string
     	When set, specifies a fixed body to write to the response (env RESPONSE_FIXED_BODY)
   -response-fixed-content-type string

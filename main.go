@@ -18,6 +18,7 @@ var config struct {
 		FixedBody        string `usage:"When set, specifies a fixed body to write to the response"`
 		FixedContentType string `default:"text/plain" usage:"When FixedBody is set, specifies the content type to set"`
 	}
+	Redirects map[string]string `usage:"Declares [path=location] mapping of local path to a resulting 307 redirect location"`
 }
 
 func main() {
@@ -32,17 +33,28 @@ func main() {
 	}
 
 	httpServer := &http.Server{
-		Addr:    bind,
-		Handler: &debugHandler{},
+		Addr: bind,
+		Handler: &debugHandler{
+			redirects: config.Redirects,
+		},
 	}
 
-	log.Printf("Ready for connections at %s", bind)
+	log.Printf("INF Ready for connections at %s", bind)
 	log.Fatal(httpServer.ListenAndServe())
 }
 
-type debugHandler struct{}
+type debugHandler struct {
+	redirects map[string]string
+}
 
 func (h *debugHandler) ServeHTTP(resp http.ResponseWriter, req *http.Request) {
+
+	if location, exists := h.redirects[req.URL.Path]; exists {
+		log.Printf("INF Redirecting %s to %s\n", req.URL.Path, location)
+		http.Redirect(resp, req, location, http.StatusTemporaryRedirect)
+		return
+	}
+
 	if config.Response.FixedBody != "" {
 		resp.Header().Set("Content-Type", config.Response.FixedContentType)
 		resp.WriteHeader(config.Response.Status)
