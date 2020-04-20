@@ -21,3 +21,11 @@ A very minimal web server that responds with a page containing the request heade
   -response-status int
     	When set, specifies the status code to use in responses (env RESPONSE_STATUS) (default 200)
 ```
+
+## Examples
+
+If the server is started with `--port 8123`, then accessing [http://localhost:8123?query=testing](http://localhost:8123?query=testing) from a browser would render:
+
+![](docs/example.png)
+
+If the server is also given `--redirects /redirect=/`, then accessing [http://localhost:8123/redirect](http://localhost:8123/redirect) would redirect the browser to [http://localhost:8123/](http://localhost:8123/).
