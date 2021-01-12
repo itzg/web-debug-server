@@ -8,15 +8,17 @@ import (
 	"log"
 	"net/http"
 	"os"
+	"strings"
 )
 
 var config struct {
 	Bind     string `usage:"The [host:port] to bind, but using port flag is preferred"`
 	Port     int    `default:"8080" usage:"The port to bind"`
 	Response struct {
-		Status           int    `default:"200" usage:"When set, specifies the status code to use in responses"`
-		FixedBody        string `usage:"When set, specifies a fixed body to write to the response"`
-		FixedContentType string `default:"text/plain" usage:"When FixedBody is set, specifies the content type to set"`
+		Status           int      `default:"200" usage:"When set, specifies the status code to use in responses"`
+		FixedBody        string   `usage:"When set, specifies a fixed body to write to the response"`
+		FixedContentType string   `default:"text/plain" usage:"When FixedBody is set, specifies the content type to set"`
+		Headers          []string `usage:"List of header:value pairs to include in response"`
 	}
 	Redirects map[string]string `usage:"Declares [path=location] mapping of local path to a resulting 307 redirect location"`
 }
@@ -53,6 +55,13 @@ func (h *debugHandler) ServeHTTP(resp http.ResponseWriter, req *http.Request) {
 		log.Printf("INF Redirecting %s to %s\n", req.URL.Path, location)
 		http.Redirect(resp, req, location, http.StatusTemporaryRedirect)
 		return
+	}
+
+	for _, header := range config.Response.Headers {
+		parts := strings.SplitN(header, ":", 2)
+		if len(parts) == 2 {
+			resp.Header().Set(strings.TrimSpace(parts[0]), strings.TrimSpace(parts[1]))
+		}
 	}
 
 	if config.Response.FixedBody != "" {
