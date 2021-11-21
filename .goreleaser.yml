@@ -15,6 +15,14 @@ dockers:
   - image_templates:
     - "itzg/web-debug-server:latest"
     - "itzg/web-debug-server:{{ .Tag }}"
+    goarch: amd64
+    build_flag_templates:
+      - --platform
+      - linux/amd64
+      - --load
+      - --label=org.opencontainers.image.version={{ .Version }}
+      - --label=org.opencontainers.image.revision={{ .FullCommit }}
+
 archives:
   -
     replacements:
