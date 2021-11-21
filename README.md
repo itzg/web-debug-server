@@ -24,6 +24,12 @@ A very minimal web server that responds with a page containing the request heade
         When set, specifies the status code to use in responses (env RESPONSE_STATUS) (default 200)
 ```
 
+## Running as a Docker container
+
+```shell
+docker run -it --rm -p 8080:8080 itzg/web-debug-server
+```
+
 ## Examples
 
 If the server is started with `--port 8123`, then accessing [http://localhost:8123?query=testing](http://localhost:8123?query=testing) from a browser would render:
