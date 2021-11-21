@@ -14,7 +14,7 @@ builds:
 dockers:
   - image_templates:
     - "itzg/web-debug-server:latest"
-    - "itzg/web-debug-server:{{ .Tag }}"
+    - "itzg/web-debug-server:{{ .Version }}"
     goarch: amd64
     build_flag_templates:
       - --platform
