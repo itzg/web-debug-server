@@ -1,4 +1,4 @@
-apiVersion: extensions/v1beta1
+apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: web-debug-server
@@ -7,6 +7,9 @@ spec:
     - http:
         paths:
           - path: /
+            pathType: Prefix
             backend:
-              serviceName: web-debug-server
-              servicePort: 8080
+              service:
+                name: web-debug-server
+                port:
+                  number: 8080

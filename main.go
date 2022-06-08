@@ -81,6 +81,9 @@ func (h *debugHandler) ServeHTTP(resp http.ResponseWriter, req *http.Request) {
 
 <head>
 <style>
+body {
+  font-family: sans-serif;
+}
 th {
   text-align: left;
 }
