@@ -11,6 +11,9 @@ builds:
   goarch:
     - amd64
     - arm
+    - arm64
+  goarm:
+    - "7"
 dockers:
   - image_templates:
     - "itzg/web-debug-server:latest"
@@ -23,14 +26,6 @@ dockers:
       - --label=org.opencontainers.image.version={{ .Version }}
       - --label=org.opencontainers.image.revision={{ .FullCommit }}
 
-archives:
-  -
-    replacements:
-      darwin: Darwin
-      linux: Linux
-      windows: Windows
-      386: i386
-      amd64: x86_64
 checksum:
   name_template: 'checksums.txt'
 snapshot:
